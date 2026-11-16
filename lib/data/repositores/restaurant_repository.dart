@@ -1,4 +1,4 @@
-import 'package:guia_restaurantes/data/service/restaurant_service.dart';
+import 'package:guia_restaurantes/data/services/restaurant_service.dart';
 import 'package:guia_restaurantes/models/restaurant.dart';
 
 class RestaurantRepository {

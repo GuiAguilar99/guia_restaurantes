@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guia_restaurantes/models/auth_session.dart';
 import 'package:guia_restaurantes/models/restaurant.dart';
 import 'package:guia_restaurantes/viewmodels/home_viewmodel.dart';
 import 'package:guia_restaurantes/views/widgets/restaurant_card.dart';
@@ -43,8 +44,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Restaurantes')),
-      body: _buildBody(),
+      appBar: AppBar(title: const Text('Restaurantes')),
+      body: Column(
+        children: [
+          _buildGreeting(), //a saudação
+          Expanded(child: _buildBody()), //a lista, ocupando o resto da tela
+        ],
+      ),
     );
   }
 
@@ -80,6 +86,29 @@ class _HomePageState extends State<HomePage> {
             RestaurantCard(restaurant: restaurant),
         ],
       ),
+    );
+  }
+
+  Widget _buildGreeting() {
+    return ValueListenableBuilder<AuthSession?>(
+      valueListenable: _viewModel.sessionListenable,
+      builder: (context, session, child) {
+        final greeting = _viewModel.greeting(session);
+
+        //ninguém logado
+        if (greeting == null) return const SizedBox.shrink();
+
+        return Padding(
+          padding: const EdgeInsetsGeometry.fromLTRB(16, 8, 16, 4),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              greeting,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            ),
+          ),
+        );
+      },
     );
   }
 }
