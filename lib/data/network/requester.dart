@@ -16,7 +16,10 @@ class Requester {
       final response = await _dio.get(path);
       return response.data;
     } on DioException catch (e) {
-      throw RequestException(_messageFor(e));
+      throw RequestException(
+        _messageFor(e),
+        statusCode: e.response?.statusCode,
+      );
     }
   }
 
@@ -26,7 +29,10 @@ class Requester {
       return response.data;
     } on DioException catch (e) {
       //transforma o erro técnico em uma mensagem para o usuário
-      throw RequestException(_messageFor(e));
+      throw RequestException(
+        _messageFor(e),
+        statusCode: e.response?.statusCode,
+      );
     }
   }
 
@@ -63,8 +69,9 @@ class Requester {
 
 class RequestException implements Exception {
   final String message;
+  final int? statusCode; //novo: o código HTTP, quando o servidor responder
 
-  RequestException(this.message);
+  RequestException(this.message, {this.statusCode});
 
   @override
   String toString() => message;

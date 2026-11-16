@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:guia_restaurantes/data/repositores/user_repository.dart';
 import 'package:guia_restaurantes/views/pages/home_page.dart';
 import 'package:guia_restaurantes/views/pages/profile_page.dart';
 
-void main() {
+Future<void> main() async {
+  //prepara o Flutter para usar plugins antes do runApp
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //lê a sessão gravada e confere se ela ainda vale
+  await UserRepository().restoreSession();
+
   runApp(const MyApp());
 }
 
